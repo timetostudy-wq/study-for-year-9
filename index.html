@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Year 9 Study Hub</title>
+<style>
+:root{--navy:#172554;--blue:#2563eb;--sky:#eff6ff;--ink:#172033;--muted:#5d687c;--line:#dbe3ef;--paper:#fff;--bg:#f4f7fb;--green:#15803d;--gold:#b45309}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+header{background:linear-gradient(125deg,#172554,#1d4ed8);color:white;padding:30px 20px 25px}
+.wrap{max-width:1100px;margin:auto}header h1{font-size:clamp(1.8rem,4vw,2.7rem);margin:0 0 6px}header p{margin:0;color:#e0eaff}
+.pill{display:inline-block;background:#ffffff20;border:1px solid #ffffff55;border-radius:999px;padding:5px 10px;font-size:.83rem;margin-top:14px}
+nav{display:flex;gap:8px;flex-wrap:wrap;padding:12px 0}
+nav button,.subject-btn{border:1px solid var(--line);background:white;color:var(--navy);border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
+nav button.active,nav button:hover,.subject-btn:hover{background:var(--navy);color:white}
+main{padding:0 20px 35px}.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:20px;margin:12px 0;box-shadow:0 4px 15px #1725540a}
+h2{margin:0 0 12px;color:var(--navy)}h3{margin:0 0 8px;color:#1e3a8a}p{margin:7px 0 12px}.muted{color:var(--muted);font-size:.94rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.subject-card{border:1px solid var(--line);border-radius:14px;padding:17px;background:#fff}
+.subject-card .emoji{font-size:1.8rem}.subject-card h3{margin-top:5px}
+.subject-card button,.primary{background:var(--blue);color:white;border:0;border-radius:9px;padding:10px 13px;cursor:pointer;font-weight:700}
+.subject-card button:hover,.primary:hover{background:#1d4ed8}
+.secondary{background:#eaf1ff!important;color:var(--navy)!important;border:1px solid #c8d8ff!important}
+.topic-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.topic{border:1px solid var(--line);border-radius:10px;padding:13px;background:#fbfdff}
+.topic summary{font-weight:700;cursor:pointer;color:var(--navy)}
+.topic ul{padding-left:20px;margin-bottom:5px}
+label{font-weight:700;display:block;margin:12px 0 5px}
+input,textarea,select{font:inherit;width:100%;padding:10px;border:1px solid #bdc9db;border-radius:9px;background:white}
+textarea{min-height:100px;resize:vertical}
+.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1;min-width:150px}
+.question{border:1px solid var(--line);border-radius:12px;padding:15px;margin:12px 0}
+.option{display:block;margin:8px 0;font-weight:400;cursor:pointer}.option input{width:auto;margin-right:8px}
+.feedback{padding:12px;border-radius:9px;margin-top:12px;background:#f1f5f9}
+.flashcard{min-height:170px;display:flex;align-items:center;justify-content:center;text-align:center;border:2px dashed #9bb7ef;background:var(--sky);border-radius:14px;padding:22px;font-size:1.15rem;font-weight:700;cursor:pointer}
+.progress{height:10px;background:#e3e9f3;border-radius:99px;overflow:hidden}.progress div{height:100%;background:#2563eb;width:0;transition:width .2s}
+footer{text-align:center;padding:20px;color:var(--muted);font-size:.88rem}
+.hidden{display:none!important}.success{color:var(--green);font-weight:700}.warning{color:var(--gold)}
+@media(max-width:600px){header{padding:24px 16px}main{padding:0 12px 25px}.panel{padding:15px}nav button{flex:1}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<h1>📚 Year 9 Study Hub</h1>
+<p>Your place to revise, practise and get ready for tests.</p>
+<span class="pill">New Zealand · Year 9 · Study smarter, not just longer</span>
+</div></header>
+<main class="wrap">
+<nav aria-label="Main navigation">
+<button class="active" data-page="home">🏠 Home</button>
+<button data-page="maths">➗ Maths</button>
+<button data-page="english">✍️ English</button>
+<button data-page="social">🌏 Social Studies</button>
+<button data-page="science">🔬 Science</button>
+<button data-page="planner">🗓️ Study Planner</button>
+<button data-page="notes">📝 My Notes</button>
+</nav>
+
+<section id="home" class="page">
+<div class="panel">
+<h2>Welcome to your study space</h2>
+<p>Choose a subject to revise. Each subject has topic checklists and a short practice quiz. Start with what you find hardest, then test yourself without looking at your notes.</p>
+<div class="progress"><div id="overallProgress"></div></div>
+<p class="muted" id="progressLabel">Quiz progress: 0 of 4 subjects completed.</p>
+</div>
+<div class="grid">
+<div class="subject-card"><div class="emoji">➗</div><h3>Maths</h3><p>Number skills, percentages, algebra, geometry, probability and statistics.</p><button onclick="showPage('maths')">Study Maths</button></div>
+<div class="subject-card"><div class="emoji">✍️</div><h3>English</h3><p>Reading comprehension, language features, persuasive writing and essays.</p><button onclick="showPage('english')">Study English</button></div>
+<div class="subject-card"><div class="emoji">🌏</div><h3>Social Studies</h3><p>History, geography, culture, citizenship and using evidence.</p><button onclick="showPage('social')">Study Social Studies</button></div>
+<div class="subject-card"><div class="emoji">🔬</div><h3>Science</h3><p>Living things, matter, forces, energy, Earth and space.</p><button onclick="showPage('science')">Study Science</button></div>
+</div>
+<div class="panel"><h2>A simple way to study</h2><div class="grid">
+<div><h3>1. Learn</h3><p>Read one small topic and write down the key ideas in your own words.</p></div>
+<div><h3>2. Practise</h3><p>Answer questions without looking at the notes. Try to explain how you got the answer.</p></div>
+<div><h3>3. Check</h3><p>Mark your work, correct mistakes and try the tricky questions again tomorrow.</p></div>
+</div></div>
+</section>
+
+<section id="maths" class="page hidden">
+<div class="panel"><h2>➗ Maths</h2><p>Use these as a checklist. Your class may cover topics in a different order.</p>
+<div class="topic-list">
+<details class="topic"><summary>Number skills</summary><ul><li>Order of operations (BIDMAS/BODMAS)</li><li>Positive and negative numbers</li><li>Factors, multiples and prime numbers</li><li>Fractions, decimals and percentages</li></ul></details>
+<details class="topic"><summary>Percentages and ratio</summary><ul><li>Find a percentage of an amount</li><li>Percentage increase and decrease</li><li>Simplify ratios</li><li>Share amounts in a ratio</li></ul></details>
+<details class="topic"><summary>Algebra</summary><ul><li>Collect like terms</li><li>Substitute values into expressions</li><li>Solve one-step and two-step equations</li><li>Recognise patterns and sequences</li></ul></details>
+<details class="topic"><summary>Geometry and measurement</summary><ul><li>Angles on a line and around a point</li><li>Triangles and quadrilaterals</li><li>Perimeter, area and volume</li><li>Units and conversions</li></ul></details>
+<details class="topic"><summary>Statistics and probability</summary><ul><li>Mean, median, mode and range</li><li>Read tables and graphs</li><li>Probability from 0 to 1 or 0% to 100%</li><li>Experimental vs theoretical probability</li></ul></details>
+</div></div>
+<div class="panel"><h3>Maths practice quiz</h3><p class="muted">Choose one answer for each question, then check your score.</p>
+<div id="quiz-maths"></div><button class="primary" onclick="checkQuiz('maths')">Mark Maths quiz</button><div id="result-maths" class="feedback hidden"></div></div>
+</section>
+
+<section id="english" class="page hidden">
+<div class="panel"><h2>✍️ English</h2><div class="topic-list">
+<details class="topic"><summary>Reading comprehension</summary><ul><li>Find the main idea and supporting details</li><li>Make inferences using clues from the text</li><li>Explain how evidence supports an answer</li><li>Identify purpose and audience</li></ul></details>
+<details class="topic"><summary>Language features</summary><ul><li>Simile and metaphor</li><li>Personification and onomatopoeia</li><li>Alliteration and emotive language</li><li>Facts, opinions, statistics and rhetorical questions</li><li>AFOREST persuasive techniques</li></ul></details>
+<details class="topic"><summary>Writing</summary><ul><li>Use a clear introduction, paragraphs and conclusion</li><li>Use topic sentences and examples</li><li>Choose words for a particular audience</li><li>Check punctuation, spelling and sentence variety</li></ul></details>
+<details class="topic"><summary>Analysing a text</summary><ul><li>What is the writer trying to make readers think or feel?</li><li>Which language feature is used?</li><li>What effect does it have, and why?</li><li>Support your answer with a short example</li></ul></details>
+</div></div>
+<div class="panel"><h3>English practice quiz</h3><div id="quiz-english"></div><button class="primary" onclick="checkQuiz('english')">Mark English quiz</button><div id="result-english" class="feedback hidden"></div></div>
+<div class="panel"><h3>Useful paragraph structure</h3><p><b>Point:</b> make your main idea clear. <b>Evidence:</b> use an example or quote from the text. <b>Explain:</b> explain how the evidence supports your point. For analysis, also explain the effect on the reader.</p></div>
+</section>
+
+<section id="social" class="page hidden">
+<div class="panel"><h2>🌏 Social Studies</h2><div class="topic-list">
+<details class="topic"><summary>History and evidence</summary><ul><li>Put events in chronological order</li><li>Explain causes and consequences</li><li>Identify perspectives and bias</li><li>Use primary and secondary sources</li><li>Support claims with evidence</li></ul></details>
+<details class="topic"><summary>Aotearoa New Zealand</summary><ul><li>Te Tiriti o Waitangi / Treaty of Waitangi: context and different understandings</li><li>Māori perspectives, iwi and hapū</li><li>Migration and how communities change</li><li>Important events and people studied in class</li></ul></details>
+<details class="topic"><summary>Geography</summary><ul><li>Read maps, keys, scale and coordinates</li><li>Human and natural features</li><li>How people interact with environments</li><li>Causes and effects of environmental issues</li></ul></details>
+<details class="topic"><summary>Culture and citizenship</summary><ul><li>Culture, identity and belonging</li><li>Rights, responsibilities and fairness</li><li>Different viewpoints on an issue</li><li>How communities make decisions</li></ul></details>
+</div><p class="muted">For Social Studies tests, learn the key terms, know the important examples from class, and practise explaining why events or issues matter.</p></div>
+<div class="panel"><h3>Social Studies practice quiz</h3><div id="quiz-social"></div><button class="primary" onclick="checkQuiz('social')">Mark Social Studies quiz</button><div id="result-social" class="feedback hidden"></div></div>
+</section>
+
+<section id="science" class="page hidden">
+<div class="panel"><h2>🔬 Science</h2><div class="topic-list">
+<details class="topic"><summary>Living things</summary><ul><li>Cells and their basic parts</li><li>Plant and animal cells</li><li>Organisms, habitats and ecosystems</li><li>Food chains and energy transfer</li></ul></details>
+<details class="topic"><summary>Matter and chemistry</summary><ul><li>Solids, liquids and gases</li><li>Particle model and changes of state</li><li>Elements, compounds and mixtures</li><li>Physical changes vs chemical reactions</li></ul></details>
+<details class="topic"><summary>Physics</summary><ul><li>Forces and motion</li><li>Energy forms and transfers</li><li>Simple circuits, if covered in class</li><li>Sound and light, if covered in class</li></ul></details>
+<details class="topic"><summary>Earth and space</summary><ul><li>Earth's structure and natural processes</li><li>Weather, climate and the water cycle</li><li>Solar system and day/night</li><li>How to read scientific diagrams and data</li></ul></details>
+<details class="topic"><summary>Scientific skills</summary><ul><li>Identify variables in an investigation</li><li>Write a prediction and method</li><li>Record results in a table or graph</li><li>Make a conclusion using evidence</li></ul></details>
+</div></div>
+<div class="panel"><h3>Science practice quiz</h3><div id="quiz-science"></div><button class="primary" onclick="checkQuiz('science')">Mark Science quiz</button><div id="result-science" class="feedback hidden"></div></div>
+</section>
+
+<section id="planner" class="page hidden">
+<div class="panel"><h2>🗓️ Study Planner</h2><p>Make a manageable plan. Short, focused sessions are often easier to stick to than one huge session.</p>
+<div class="row"><div><label for="testDate">Test date</label><input type="date" id="testDate"></div><div><label for="plannerSubject">Subject</label><select id="plannerSubject"><option>Maths</option><option>English</option><option>Social Studies</option><option>Science</option><option>Other</option></select></div></div>
+<label for="plannerTask">What do you need to revise?</label><input id="plannerTask" placeholder="e.g. percentages, persuasive techniques, cells">
+<label for="plannerWhen">When will you study?</label><input id="plannerWhen" placeholder="e.g. Tuesday after school, 20 minutes">
+<button class="primary" onclick="addPlan()" style="margin-top:12px">Add to my plan</button>
+<div id="plannerList" style="margin-top:15px"></div>
+<p class="muted">Planner items stay in this browser on this device. If you clear browser data or use another device, they may not be there.</p></div>
+<div class="panel"><h3>Quick revision routine (30 minutes)</h3><ol><li>5 minutes: write down what you remember without notes.</li><li>15 minutes: revise one topic and work through examples.</li><li>7 minutes: answer practice questions.</li><li>3 minutes: note what you still need help with.</li></ol></div>
+</section>
+
+<section id="notes" class="page hidden">
+<div class="panel"><h2>📝 My Notes</h2><p>Write your teacher's test topics, key definitions, examples or questions to ask in class.</p>
+<label for="noteSubject">Subject</label><select id="noteSubject"><option>Maths</option><option>English</option><option>Social Studies</option><option>Science</option><option>Other</option></select>
+<label for="noteTitle">Note title</label><input id="noteTitle" placeholder="e.g. Fractions revision">
+<label for="noteBody">Your notes</label><textarea id="noteBody" placeholder="Write your notes here..."></textarea>
+<button class="primary" onclick="saveNote()" style="margin-top:12px">Save note</button>
+<div id="notesList" style="margin-top:18px"></div>
+<p class="muted">Notes are stored in this browser on this device. This starter website does not upload or share your notes.</p>
+</div></section>
+</main>
+<footer>Year 9 Study Hub · A revision helper, not an official school website. Check your class notes and teacher's study guide for the exact test content.</footer>
+<script>
+const quizData={
+ maths:[
+ {q:"What is 25% of 80?",o:["10","20","25","40"],a:1,e:"25% is one quarter, and 80 ÷ 4 = 20."},
+ {q:"Simplify the ratio 6:9.",o:["2:3","3:2","6:3","1:3"],a:0,e:"Divide both parts by their highest common factor, 3."},
+ {q:"Solve: x + 7 = 15.",o:["7","8","15","22"],a:1,e:"Subtract 7 from both sides: x = 15 − 7 = 8."},
+ {q:"What is the median of 3, 8, 2, 5, 7?",o:["3","5","7","25"],a:1,e:"Put them in order: 2, 3, 5, 7, 8. The middle value is 5."}
+ ],
+ english:[
+ {q:"Which sentence uses alliteration?",o:["The rain fell all night.","Busy bees buzzed by.","The sky was dark.","I was very tired."],a:1,e:"Alliteration repeats the same or similar starting sound: busy bees buzzed."},
+ {q:"What is a rhetorical question?",o:["A question asked only in a test","A question that usually does not need an answer","A sentence with no punctuation","A fact with a number"],a:1,e:"It is asked to make the audience think or persuade them, rather than to get a direct answer."},
+ {q:"Which is an opinion?",o:["A week has seven days.","Water freezes at around 0°C under ordinary conditions.","Reading is the best way to spend free time.","A triangle has three sides."],a:2,e:"An opinion expresses a person's view or judgement."},
+ {q:"What should evidence do in a paragraph analysing a text?",o:["Replace your explanation","Support your point","Make the paragraph longer only","Introduce a new topic"],a:1,e:"Evidence—such as a short quote or example—supports the point you are making."}
+ ],
+ social:[
+ {q:"What is a primary source?",o:["A source made at the time being studied","A modern textbook summary","A fictional story about the past","A list of opinions with no examples"],a:0,e:"A primary source comes from the time or event being investigated, such as a letter, photograph or diary."},
+ {q:"What does chronology mean?",o:["Comparing opinions","Putting events in time order","Drawing a map","Counting population"],a:1,e:"Chronology is the order in which events happened."},
+ {q:"Why should you use evidence in a Social Studies answer?",o:["To make it look complicated","To support your explanation or claim","To avoid answering the question","To replace all your own words"],a:1,e:"Evidence helps show why your answer is reasonable and supported."},
+ {q:"What is a perspective?",o:["A map scale","A person's or group's point of view","A type of weather","A date on a timeline"],a:1,e:"Perspectives can differ depending on people's experiences, values and position."}
+ ],
+ science:[
+ {q:"Which part of a cell controls many of its activities?",o:["Nucleus","Cell wall","Water","Chlorophyll"],a:0,e:"The nucleus contains genetic material and helps control cell activities."},
+ {q:"What happens when liquid water freezes?",o:["It becomes a gas","It becomes a solid","It disappears","It becomes a new element"],a:1,e:"Freezing is a change of state from liquid to solid."},
+ {q:"In a fair test, why change only one independent variable at a time?",o:["To make results impossible to compare","To help identify what caused any change","To use fewer words","To avoid recording results"],a:1,e:"Keeping other factors the same helps you test the effect of the variable you changed."},
+ {q:"Which is an example of a force?",o:["A push or pull","A colour","A habitat","A temperature unit"],a:0,e:"A force is a push or pull that can change an object's motion or shape."}
+ ]
+};
+const completed={maths:false,english:false,social:false,science:false};
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('hidden',p.id!==id));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+function renderQuiz(subject){const root=document.getElementById('quiz-'+subject);root.innerHTML=quizData[subject].map((q,i)=>`<div class="question"><p><b>${i+1}. ${q.q}</b></p>${q.o.map((opt,j)=>`<label class="option"><input type="radio" name="${subject}-${i}" value="${j}"> ${opt}</label>`).join('')}<div id="${subject}-ex-${i}" class="muted hidden"></div></div>`).join('');}
+Object.keys(quizData).forEach(renderQuiz);
+function checkQuiz(subject){let score=0;quizData[subject].forEach((q,i)=>{const chosen=document.querySelector(`input[name="${subject}-${i}"]:checked`);const exp=document.getElementById(`${subject}-ex-${i}`);exp.classList.remove('hidden');if(chosen&&Number(chosen.value)===q.a){score++;exp.innerHTML='<span class="success">Correct!</span> '+q.e;}else{exp.innerHTML='<span class="warning">Answer: '+q.o[q.a]+'.</span> '+q.e;}});const result=document.getElementById('result-'+subject);result.classList.remove('hidden');result.innerHTML=`<b>You scored ${score} out of ${quizData[subject].length}.</b> ${score===quizData[subject].length?'Excellent work! Try explaining why each answer is correct.':'Review the explanations, then try the quiz again.'}`;completed[subject]=true;updateProgress();}
+function updateProgress(){let n=Object.values(completed).filter(Boolean).length;document.getElementById('overallProgress').style.width=(n/4*100)+'%';document.getElementById('progressLabel').textContent=`Quiz progress: ${n} of 4 subjects completed.`;}
+function getStore(key,def){try{return JSON.parse(localStorage.getItem(key))||def}catch(e){return def}}
+function setStore(key,val){try{localStorage.setItem(key,JSON.stringify(val))}catch(e){}}
+function addPlan(){let task=document.getElementById('plannerTask').value.trim();if(!task){alert('Add a revision topic first.');return;}let items=getStore('studyPlans',[]);items.push({id:Date.now(),date:document.getElementById('testDate').value,subject:document.getElementById('plannerSubject').value,task,when:document.getElementById('plannerWhen').value.trim(),done:false});setStore('studyPlans',items);document.getElementById('plannerTask').value='';document.getElementById('plannerWhen').value='';renderPlans();}
+function renderPlans(){let items=getStore('studyPlans',[]);let root=document.getElementById('plannerList');root.innerHTML=items.length?items.map(x=>`<div class="question"><label class="option"><input type="checkbox" ${x.done?'checked':''} onchange="togglePlan(${x.id},this.checked)"> <b>${escapeHtml(x.subject)}:</b> ${escapeHtml(x.task)}</label><div class="muted">${x.date?'Test date: '+escapeHtml(x.date)+' · ':''}${escapeHtml(x.when||'Study time not set')}</div><button class="secondary" onclick="deletePlan(${x.id})">Remove</button></div>`).join(''):'<p class="muted">Your study plan will appear here.</p>';}
+function togglePlan(id,done){let a=getStore('studyPlans',[]);a=a.map(x=>x.id===id?{...x,done}:x);setStore('studyPlans',a);renderPlans();}
+function deletePlan(id){setStore('studyPlans',getStore('studyPlans',[]).filter(x=>x.id!==id));renderPlans();}
+function saveNote(){let title=document.getElementById('noteTitle').value.trim(),body=document.getElementById('noteBody').value.trim();if(!title||!body){alert('Add a title and some notes first.');return;}let notes=getStore('studyNotes',[]);notes.unshift({id:Date.now(),subject:document.getElementById('noteSubject').value,title,body});setStore('studyNotes',notes);document.getElementById('noteTitle').value='';document.getElementById('noteBody').value='';renderNotes();}
+function renderNotes(){let notes=getStore('studyNotes',[]);document.getElementById('notesList').innerHTML=notes.length?notes.map(n=>`<div class="question"><h3>${escapeHtml(n.title)}</h3><p class="muted">${escapeHtml(n.subject)}</p><p>${escapeHtml(n.body).replace(/\n/g,'<br>')}</p><button class="secondary" onclick="deleteNote(${n.id})">Delete note</button></div>`).join(''):'<p class="muted">You have not saved any notes yet.</p>';}
+function deleteNote(id){setStore('studyNotes',getStore('studyNotes',[]).filter(n=>n.id!==id));renderNotes();}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+renderPlans();renderNotes();
+</script>
+</body>
+</html>
